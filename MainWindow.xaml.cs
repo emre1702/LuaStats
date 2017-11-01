@@ -211,7 +211,7 @@ namespace MTAResourceStats {
 			while ( currentpos < text.Length && ( indexSingleStr != -1 || indexMultiStr != -1 || indexSingleComm != -1 || indexMultiComm != -1 ) ) {
 				// ' is first //
 				if ( ( indexSingleStr != -1
-						&& ( laststrchar == '\'' || laststrchar == '|' ) )
+						&& laststrchar == '\'' )
 						|| ( ( indexSingleStr < indexMultiStr || indexMultiStr == -1 ) 
 						&& ( indexSingleStr < indexSingleComm || indexSingleComm == -1 ) 
 						&& ( indexSingleStr < indexMultiComm || indexMultiComm == -1 ) ) ) {
@@ -220,14 +220,13 @@ namespace MTAResourceStats {
 					laststrchar = laststrchar == '\'' ? '|' : '\'';
 				// " is first //
 				} else if ( ( indexMultiStr != -1 
-						&& ( laststrchar == '"' || laststrchar == '|' ) )
+						&& laststrchar == '"' )
 						|| ( ( indexMultiStr < indexSingleStr || indexSingleStr == -1 ) 
 						&& ( indexMultiStr < indexSingleComm || indexSingleComm == -1 ) 
 						&& ( indexMultiStr < indexMultiComm || indexMultiComm == -1 ) ) ) {
 					stringPositions.Add ( (uint) indexMultiStr );
 					currentpos = indexMultiStr + 1;
 					laststrchar = laststrchar == '"' ? '|' : '"';
-					MessageBox.Show ( "2: "+laststrchar );
 				// -- is first //
 				} else if ( laststrchar == '|' 
 						&& indexSingleComm != -1 
@@ -237,7 +236,6 @@ namespace MTAResourceStats {
 					currentpos = text.IndexOf ( "\n", indexSingleComm );
 					singleLineCommentPositions.Insert ( posSingleComm + 1, (uint) currentpos - 1 );
 					posSingleComm += 2;
-					MessageBox.Show ( "3: " + laststrchar );
 				// --[[=...][ is first //
 				} else if ( laststrchar == '|' 
 						&& indexMultiComm != -1 
