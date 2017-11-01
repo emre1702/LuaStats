@@ -5,8 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MTAResourceStats"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="LuaStats by Bonus" Height="377" Width="404" Background="#FF3F3F46">
+    <Grid Margin="0,0,0,0">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="Black" Offset="0"/>
+                <GradientStop Color="#FF302E2E" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <TextBox x:Name="folderTextBox" HorizontalAlignment="Left" Height="23" Margin="35,265,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="315"/>
+        <Button x:Name="folderDialogButton" Content="&lt;" HorizontalAlignment="Left" Margin="350,265,0,0" VerticalAlignment="Top" Width="20" Height="23" RenderTransformOrigin="7,0.13" Click="OnFolderDialogButtonClick"/>
+        <Button x:Name="startButton" Content="start" HorizontalAlignment="Left" Margin="295,305,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="OnStartButtonClick" RenderTransformOrigin="0.533,2.609"/>
+        <Label Content="amount LUA files:" HorizontalAlignment="Left" Margin="35,20,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label Content="amount other files:" HorizontalAlignment="Left" Margin="35,51,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label Content="amount functions:" HorizontalAlignment="Left" Margin="35,82,0,0" VerticalAlignment="Top" Foreground="Gainsboro"/>
+        <Label Content="amount lines:" HorizontalAlignment="Left" Margin="35,113,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label Content="amount characters:" HorizontalAlignment="Left" Margin="35,144,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label Content="amount comment-lines:" HorizontalAlignment="Left" Margin="35,175,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label Content="amount comment-characters:" HorizontalAlignment="Left" Margin="35,206,0,0" VerticalAlignment="Top" Foreground="Gainsboro"/>
+        <Label x:Name="amountLuaFilesLabel" Content="0" HorizontalAlignment="Left" Margin="268,20,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label x:Name="amountOtherFilesLabel" Content="0" HorizontalAlignment="Left" Margin="268,51,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label x:Name="amountFunctionsLabel" Content="0" HorizontalAlignment="Left" Margin="268,82,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label x:Name="amountLinesLabel" Content="0" HorizontalAlignment="Left" Margin="268,113,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label x:Name="amountCharactersLabel" Content="0" HorizontalAlignment="Left" Margin="268,144,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label x:Name="amountCommentLinesLabel" Content="0" HorizontalAlignment="Left" Margin="268,175,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label x:Name="amountCommentCharactersLabel" Content="0" HorizontalAlignment="Left" Margin="268,206,0,0" VerticalAlignment="Top" Foreground="Gainsboro"/>
+        <ComboBox x:Name="iterateChoice" HorizontalAlignment="Left" Margin="35,306,0,0" VerticalAlignment="Top" Width="185" IsReadOnly="True" SelectedIndex="1">
+            <ListBoxItem x:Name="fastIterateChoice" Content="fast &amp; blocking" Foreground="Black"/>
+            <ListBoxItem x:Name="slowIterateChoice" Content="slow &amp; not-blocking" Foreground="Black"/>
+        </ComboBox>
+
     </Grid>
 </Window>
