@@ -144,9 +144,11 @@ namespace MTAResourceStats {
 			this.Dispatcher.Invoke ( () => {
 				switch ( stat ) {
 					case Stats.amountLuaFiles:
+						this.amountFiles.Content = Convert.ToUInt64 ( this.amountFiles.Content ) + valuetoadd;
 						this.amountLuaFilesLabel.Content = Convert.ToUInt64 ( this.amountLuaFilesLabel.Content ) + valuetoadd;
 						break;
 					case Stats.amountOtherFiles:
+						this.amountFiles.Content = Convert.ToUInt64 ( this.amountFiles.Content ) + valuetoadd;
 						this.amountOtherFilesLabel.Content = Convert.ToUInt64 ( this.amountOtherFilesLabel.Content ) + valuetoadd;
 						break;
 					case Stats.amountFunctions:
