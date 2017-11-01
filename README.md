@@ -20,3 +20,9 @@ Also you can choose between a fast execution or a slow, but prettier.
 The fast execution could block all threads and that way also the UI.  
 If you got many large .lua files you should better take the fast execution,   
 else I would suggest to take the slower iterate.  
+
+
+## I want more features!  
+
+Well, then just suggest it in the Issues-tab:  
+[Issues](https://github.com/emre1702/LuaStats/issues)
