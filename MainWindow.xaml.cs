@@ -105,7 +105,7 @@ namespace MTAResourceStats {
 					} );
 				} );
 				this.Cursor = Cursors.Arrow;
-				MessageBox.Show ( "finished" );
+				MessageBox.Show ( this, "finished", "Success", MessageBoxButton.OK, MessageBoxImage.Information );
 			} else {
 				SendErrorMessage ( "Folder doesn't exist!" );
 			}			
