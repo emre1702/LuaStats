@@ -24,5 +24,5 @@ else I would suggest to take the slower iterate.
 
 ## I want more features!  
 
-Well, then just suggest it in the Issues-tab:  
+Then just suggest it in the Issues-tab:  
 [Issues](https://github.com/emre1702/LuaStats/issues)
