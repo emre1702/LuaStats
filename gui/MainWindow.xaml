@@ -1,11 +1,11 @@
-﻿<Window x:Class="MTAResourceStats.MainWindow"
+﻿<Window x:Class="MTAResourceStats.gui.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MTAResourceStats"
+        xmlns:local="clr-namespace:MTAResourceStats.gui"
         mc:Ignorable="d"
-        Title="LuaStats by Bonus" Height="422" Width="409" Background="#FF3F3F46" WindowStyle="ThreeDBorderWindow">
+        Title="MTA resource stats" Height="422" Width="409" Background="#FF3F3F46" WindowStyle="ThreeDBorderWindow">
     <Grid Margin="0,0,0,0
           ">
         <Grid.Background>

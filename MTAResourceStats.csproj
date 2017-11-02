@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B6C9908F-B7A4-48CE-BD16-181762CEFD83}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>LuaStats</RootNamespace>
-    <AssemblyName>LuaStats</AssemblyName>
+    <RootNamespace>MTAResourceStats</RootNamespace>
+    <AssemblyName>MTAResourceStats</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -36,6 +36,9 @@
   <PropertyGroup>
     <ApplicationIcon>bonus.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>MTAResourceStats.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -58,7 +61,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Page Include="gui\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -66,12 +69,24 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="enums\IterateType.cs" />
+    <Compile Include="enums\Stat.cs" />
+    <Compile Include="funcs\Comment.cs" />
+    <Compile Include="funcs\Counter.cs" />
+    <Compile Include="funcs\Iterate.cs" />
+    <Compile Include="funcs\Message.cs" />
+    <Compile Include="funcs\Position.cs" />
+    <Compile Include="funcs\StatsRetrieve.cs" />
+    <Compile Include="funcs\LuaString.cs" />
+    <Compile Include="funcs\Variable.cs" />
+    <Compile Include="gui\Button.cs" />
+    <Compile Include="gui\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="gui\ValueChanges.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -99,6 +114,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="bonus.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="funcs\Text.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
