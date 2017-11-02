@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MTAResourceStats.gui"
         mc:Ignorable="d"
-        Title="MTA resource stats" Height="422" Width="409" Background="#FF3F3F46" WindowStyle="ThreeDBorderWindow">
+        Title="MTA resource stats" Height="422" Width="414" Background="#FF3F3F46" WindowStyle="ThreeDBorderWindow">
     <Grid Margin="0,0,0,0
           ">
         <Grid.Background>
