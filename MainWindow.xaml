@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MTAResourceStats"
         mc:Ignorable="d"
-        Title="LuaStats by Bonus" Height="392" Width="409" Background="#FF3F3F46" WindowStyle="ThreeDBorderWindow">
-    <Grid Margin="0,0,0,0">
+        Title="LuaStats by Bonus" Height="422" Width="409" Background="#FF3F3F46" WindowStyle="ThreeDBorderWindow">
+    <Grid Margin="0,0,0,0
+          ">
         <Grid.Background>
             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                 <GradientStop Color="Black" Offset="0"/>
@@ -19,17 +20,19 @@
         <Label Content="amount files:" HorizontalAlignment="Left" Margin="35,20,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
         <Label Content=".lua:" HorizontalAlignment="Left" Margin="69,46,0,0" VerticalAlignment="Top" Foreground="Gainsboro" RenderTransformOrigin="1.516,0.538" />
         <Label Content="other:" HorizontalAlignment="Left" Margin="69,72,0,0" VerticalAlignment="Top" Foreground="Gainsboro" RenderTransformOrigin="1.516,0.538" />
-        <Label Content="amount lines:" HorizontalAlignment="Left" Margin="35,121,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
-        <Label Content="amount characters:" HorizontalAlignment="Left" Margin="35,147,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
-        <Label Content="amount comment-lines:" HorizontalAlignment="Left" Margin="35,173,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
-        <Label Content="amount comment-characters:" HorizontalAlignment="Left" Margin="35,199,0,0" VerticalAlignment="Top" Foreground="Gainsboro"/>
+        <Label Content="amount functions:" HorizontalAlignment="Left" Margin="35,111,0,0" VerticalAlignment="Top" Foreground="Gainsboro" RenderTransformOrigin="0,0.769" />
+        <Label Content="amount lines:" HorizontalAlignment="Left" Margin="35,155,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label Content="amount characters:" HorizontalAlignment="Left" Margin="35,181,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label Content="amount comment-lines:" HorizontalAlignment="Left" Margin="35,207,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label Content="amount comment-characters:" HorizontalAlignment="Left" Margin="35,233,0,0" VerticalAlignment="Top" Foreground="Gainsboro"/>
         <Label x:Name="amountFiles" Content="0" HorizontalAlignment="Left" Margin="247,20,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
         <Label x:Name="amountLuaFilesLabel" Content="0" HorizontalAlignment="Left" Margin="247,46,0,0" VerticalAlignment="Top" Foreground="Gainsboro" RenderTransformOrigin="-4.875,3.077" />
         <Label x:Name="amountOtherFilesLabel" Content="0" HorizontalAlignment="Left" Margin="247,72,0,0" VerticalAlignment="Top" Foreground="Gainsboro" RenderTransformOrigin="0.75,1.769" />
-        <Label x:Name="amountLinesLabel" Content="0" HorizontalAlignment="Left" Margin="247,121,0,0" VerticalAlignment="Top" Foreground="Gainsboro" RenderTransformOrigin="0.438,6.615" />
-        <Label x:Name="amountCharactersLabel" Content="0" HorizontalAlignment="Left" Margin="247,147,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
-        <Label x:Name="amountCommentLinesLabel" Content="0" HorizontalAlignment="Left" Margin="247,173,0,0" VerticalAlignment="Top" Foreground="Gainsboro" RenderTransformOrigin="0.75,4.615" />
-        <Label x:Name="amountCommentCharactersLabel" Content="0" HorizontalAlignment="Left" Margin="247,199,0,0" VerticalAlignment="Top" Foreground="Gainsboro"/>
+        <Label x:Name="amountFunctionsLabel" Content="0" HorizontalAlignment="Left" Margin="247,111,0,0" VerticalAlignment="Top" Foreground="Gainsboro" RenderTransformOrigin="0.75,1.769" />
+        <Label x:Name="amountLinesLabel" Content="0" HorizontalAlignment="Left" Margin="247,155,0,0" VerticalAlignment="Top" Foreground="Gainsboro" RenderTransformOrigin="0.438,6.615" />
+        <Label x:Name="amountCharactersLabel" Content="0" HorizontalAlignment="Left" Margin="247,181,0,0" VerticalAlignment="Top" Foreground="Gainsboro" />
+        <Label x:Name="amountCommentLinesLabel" Content="0" HorizontalAlignment="Left" Margin="247,207,0,0" VerticalAlignment="Top" Foreground="Gainsboro" RenderTransformOrigin="0.75,4.615" />
+        <Label x:Name="amountCommentCharactersLabel" Content="0" HorizontalAlignment="Left" Margin="247,233,0,0" VerticalAlignment="Top" Foreground="Gainsboro"/>
         <ComboBox x:Name="iterateChoice" HorizontalAlignment="Left" Margin="35,0,0,36" Width="185" IsReadOnly="True" SelectedIndex="1" Height="22" VerticalAlignment="Bottom">
             <ListBoxItem x:Name="fastIterateChoice" Content="fast &amp; blocking" Foreground="Black"/>
             <ListBoxItem x:Name="slowIterateChoice" Content="slow &amp; not-blocking" Foreground="Black"/>

@@ -69,6 +69,7 @@ namespace MTAResourceStats {
 
 							uint amountcommentchars = this.CountCommentData ( text, multiLineCommentPositions, singleLineCommentPositions );
 							this.CountData ( text, textwithoutcomment, amountcommentchars, multiLineCommentPositions, singleLineCommentPositions );
+							this.CountFunctions ( text, multiLineCommentPositions, singleLineCommentPositions, stringPositions );
 
 							//this.LoadLocalVariables ( text, textwithoutcomment, ref localvariables );
 						}
@@ -197,6 +198,18 @@ namespace MTAResourceStats {
 		}
 		#endregion
 
+		#region string
+		private bool IsIndexInString ( string text, int index, List<uint> stringPositions ) {
+			for ( int i = 0; i < stringPositions.Count; i += 2 ) {
+				if ( index < stringPositions[i] )
+					return false;
+				else if ( index > stringPositions[i] && index < stringPositions[i + 1] )
+					return true;
+			}
+			return false;
+		}
+		#endregion
+
 		#region string & comment
 		private void LoadAllCommentsAndStrings ( string text, ref List<uint> multiLineCommentPositions, ref List<uint> singleLineCommentPositions, ref List<uint> stringPositions ) {
 			int indexSingleStr = text.IndexOf ( '\'' );
@@ -307,7 +320,24 @@ namespace MTAResourceStats {
 		#endregion
 
 		#region function
-
+		private void CountFunctions ( string text, List<uint> multiLineCommentPositions, List<uint> singleLineCommentPositions, List<uint> stringPositions ) {
+			int indexfunction = text.IndexOf ( "function" );
+			uint amountfunctions = 0;
+			while ( indexfunction != -1 ) {
+				if ( !IsIndexInComment ( text, indexfunction, multiLineCommentPositions, singleLineCommentPositions ) ) {
+					if ( !IsIndexInString ( text, indexfunction, stringPositions ) ) {
+						if ( indexfunction == 0 || text[indexfunction - 1] == ' ' || text[indexfunction - 1] == '\n' ) {
+							char nextchar = text[indexfunction + "function".Length];
+							if ( nextchar == ' ' || nextchar == '(' || nextchar == '\n' ) {
+								amountfunctions++;
+							}
+						}
+					}
+				}
+				indexfunction = text.IndexOf ( "function", indexfunction + 1 );
+			}
+			AddToData ( Stats.amountGlobalFunctions, amountfunctions );
+		}
 		#endregion
 
 		#region iterate
@@ -326,9 +356,9 @@ namespace MTAResourceStats {
 				this.amountFiles.Content = "0";
 				this.amountLuaFilesLabel.Content = "0";
 				this.amountOtherFilesLabel.Content = "0";
-				/*this.amountFunctionsLabel.Content = "0";
-				this.amountGlobalFunctionsLabel.Content = "0";
-				this.amountLocalFunctionsLabel.Content = "0";*/
+				this.amountFunctionsLabel.Content = "0";
+				//this.amountGlobalFunctionsLabel.Content = "0";
+				//this.amountLocalFunctionsLabel.Content = "0";
 				this.amountLinesLabel.Content = "0";
 				this.amountCharactersLabel.Content = "0";
 				this.amountCommentLinesLabel.Content = "0";
@@ -349,10 +379,10 @@ namespace MTAResourceStats {
 						break;
 					/*case Stats.amountLocalFunctions:
 						this.amountFunctionsLabel.Content = Convert.ToUInt32 ( this.amountFunctionsLabel.Content ) + valuetoadd;
-						break;
+						break;*/
 					case Stats.amountGlobalFunctions:
 						this.amountFunctionsLabel.Content = Convert.ToUInt32 ( this.amountFunctionsLabel.Content ) + valuetoadd;
-						break;*/
+						break;
 					case Stats.amountLines:
 						this.amountLinesLabel.Content = Convert.ToUInt32 ( this.amountLinesLabel.Content ) + valuetoadd;
 						break;
