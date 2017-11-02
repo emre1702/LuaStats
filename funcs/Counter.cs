@@ -38,7 +38,7 @@ namespace MTAResourceStats.funcs {
 			while ( indexfunction != -1 ) {
 				if ( !Comment.IsIndexInComment ( text, indexfunction, multiLineCommentPositions, singleLineCommentPositions ) ) {
 					if ( !LuaString.IsIndexInString ( text, indexfunction, stringPositions ) ) {
-						if ( indexfunction == 0 || text[indexfunction - 1] == ' ' || text[indexfunction - 1] == '\n' ) {
+						if ( indexfunction == 0 || Util.CanStayBehind ( text[indexfunction - 1] ) ) {
 							char nextchar = text[indexfunction + "function".Length];
 							if ( nextchar == ' ' || nextchar == '(' || nextchar == '\n' ) {
 								amountfunctions++;
