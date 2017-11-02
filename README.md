@@ -1,7 +1,7 @@
-# LuaStats
-Get stats of your Lua-files.  
+# MTAResourceStats
+Get stats of your MTA resources.  
 
-A small tool to get statistics for all of your Lua-files in one directory.   
+A small tool to get statistics for all of your Lua-files in a resource-dictionary.   
 
 
 ## What can that program do?  
@@ -25,4 +25,4 @@ else I would suggest to take the slower iterate.
 ## I want more features!  
 
 Then just suggest it in the Issues-tab:  
-[Issues](https://github.com/emre1702/LuaStats/issues)
+[Issues](https://github.com/emre1702/MTAResourceStats/issues)
