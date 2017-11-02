@@ -86,7 +86,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="gui\ValueChanges.cs" />
+    <Compile Include="gui\ValueChange.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
