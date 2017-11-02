@@ -1,7 +1,7 @@
-# LuaStats
-Get stats of your Lua-files.  
+# MTAResourceStats
+Get stats of your MTA resources.  
 
-A small tool to get statistics for all of your Lua-files in one directory.   
+A small tool to get statistics for all of your Lua-files in a resource-dictionary.   
 
 
 ## What can that program do?  
