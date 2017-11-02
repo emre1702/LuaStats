@@ -223,20 +223,20 @@ namespace MTAResourceStats {
 
 			while ( currentpos < text.Length && ( indexSingleStr != -1 || indexMultiStr != -1 || indexSingleComm != -1 || indexMultiComm != -1 ) ) {
 				// ' is first //
-				if ( ( indexSingleStr != -1
-						&& laststrchar == '\'' )
+				if ( indexSingleStr != -1
+						&& ( laststrchar == '\''
 						|| ( ( indexSingleStr < indexMultiStr || indexMultiStr == -1 ) 
 						&& ( indexSingleStr < indexSingleComm || indexSingleComm == -1 ) 
-						&& ( indexSingleStr < indexMultiComm || indexMultiComm == -1 ) ) ) {
+						&& ( indexSingleStr < indexMultiComm || indexMultiComm == -1 ) ) ) ) {
 					stringPositions.Add ( (uint) indexSingleStr );
 					currentpos = indexSingleStr + 1;
 					laststrchar = laststrchar == '\'' ? '|' : '\'';
-				// " is first //
-				} else if ( ( indexMultiStr != -1 
-						&& laststrchar == '"' )
+					// " is first //
+				} else if ( indexMultiStr != -1 
+						&& ( laststrchar == '"'
 						|| ( ( indexMultiStr < indexSingleStr || indexSingleStr == -1 ) 
 						&& ( indexMultiStr < indexSingleComm || indexSingleComm == -1 ) 
-						&& ( indexMultiStr < indexMultiComm || indexMultiComm == -1 ) ) ) {
+						&& ( indexMultiStr < indexMultiComm || indexMultiComm == -1 ) ) ) ) {
 					stringPositions.Add ( (uint) indexMultiStr );
 					currentpos = indexMultiStr + 1;
 					laststrchar = laststrchar == '"' ? '|' : '"';
