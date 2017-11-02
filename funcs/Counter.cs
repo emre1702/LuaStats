@@ -39,9 +39,11 @@ namespace MTAResourceStats.funcs {
 				if ( !Comment.IsIndexInComment ( text, indexfunction, multiLineCommentPositions, singleLineCommentPositions ) ) {
 					if ( !LuaString.IsIndexInString ( text, indexfunction, stringPositions ) ) {
 						if ( indexfunction == 0 || Util.CanStayBehind ( text[indexfunction - 1] ) ) {
-							char nextchar = text[indexfunction + "function".Length];
-							if ( nextchar == ' ' || nextchar == '(' || nextchar == '\n' ) {
-								amountfunctions++;
+							if ( text.Length > indexfunction + "function".Length ) {
+								char nextchar = text[indexfunction + "function".Length];
+								if ( Util.CanStayInFrontOfFunction ( nextchar ) ) {
+									amountfunctions++;
+								}
 							}
 						}
 					}
