@@ -78,7 +78,6 @@
     <Compile Include="funcs\Position.cs" />
     <Compile Include="funcs\StatsRetrieve.cs" />
     <Compile Include="funcs\LuaString.cs" />
-    <Compile Include="funcs\Util.cs" />
     <Compile Include="funcs\Variable.cs" />
     <Compile Include="gui\Button.cs" />
     <Compile Include="gui\MainWindow.xaml.cs">
