@@ -29,9 +29,7 @@ namespace MTAResourceStats.gui {
 				IterateType iteratetype = (ListBoxItem) ( this.iterateChoice.SelectedItem ) == fastIterateChoice ? IterateType.fastBlocking : IterateType.slowNotBlocking;
 				this.Cursor = Cursors.Wait;
 				await Task.Run ( ( ) => {
-					IEnumerable<string> files = Directory.EnumerateFiles ( path, "*", SearchOption.AllDirectories );
-					// iterate files //
-					Iterate.MainIterate ( iteratetype, files, (filepath) => StatsRetrieve.Start ( filepath, this ) );
+					MainRunner.Start ( path, iteratetype, this );
 				} );
 				this.Cursor = Cursors.Arrow;
 				MessageBox.Show ( this, "finished", "Success", MessageBoxButton.OK, MessageBoxImage.Information );

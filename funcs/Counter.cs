@@ -2,42 +2,40 @@
 using System.Linq;
 using MTAResourceStats.enums;
 using MTAResourceStats.gui;
+using MTAResourceStats.structclass;
 
 namespace MTAResourceStats.funcs {
 	static class Counter {
 
 		#region text
-		public static void CountData ( string text, string textwithoutcomments, uint amountcommentchars, List<uint> multiLineCommentPositions, List<uint> singleLineCommentPositions, MainWindow window ) {
-			window.AddToData ( Stat.amountCharacters, (uint) text.Replace ( "\n", "" ).Length - amountcommentchars );
-			window.AddToData ( Stat.amountLines, ( (uint) ( textwithoutcomments != "" ? 1 : 0 ) + (uint) textwithoutcomments.Count ( c => c == '\n' ) ) );
+		public static void CountData ( LuaFile file ) {
+			file.window.AddToData ( Stat.amountCharacters, (uint) ( file.content.Replace ( "\n", "" ).Length - file.amountCommentChars ) );
+			file.window.AddToData ( Stat.amountLines, ( (uint) ( file.contentWithoutComment != "" ? 1 : 0 ) + (uint) file.contentWithoutComment.Count ( c => c == '\n' ) ) );
 		}
 		#endregion
 
 		#region comment
-		public static uint CountCommentData ( string text, List<uint> multiLineCommentPositions, List<uint> singleLineCommentPositions, MainWindow window ) {
+		public static void CountCommentData ( LuaFile file ) {
 			uint amountchars = 0;
-			for ( int i = 0; i < multiLineCommentPositions.Count; i += 2 ) {
-				string substr = text.Substring ( (int) multiLineCommentPositions[i], (int) ( multiLineCommentPositions[i + 1] - multiLineCommentPositions[i] + 1 ) );
+			for ( int i = 0; i < file.comments.Count; i++ ) {
+				string substr = file.content.Substring ( (int) file.comments[i].startindex, (int) ( file.comments[i].endindex - file.comments[i].startindex + 1 ) );
 				uint amountnewlines = (uint) ( substr.Count ( c => c == '\n' ) );
 				amountchars += (uint) substr.Length - amountnewlines;
-				window.AddToData ( Stat.amountCommentLines, 1 + amountnewlines );
+				file.window.AddToData ( Stat.amountCommentLines, 1 + amountnewlines );
 			}
-			for ( int i = 0; i < singleLineCommentPositions.Count; i += 2 ) {
-				amountchars += singleLineCommentPositions[i + 1] - singleLineCommentPositions[i] + 1;
-				window.AddToData ( Stat.amountCommentLines, 1 );
-			}
-			window.AddToData ( Stat.amountCommentCharacters, amountchars );
-			return amountchars;
+			file.window.AddToData ( Stat.amountCommentCharacters, amountchars );
+			file.amountCommentChars = amountchars;
 		}
 		#endregion
 
 		#region function
-		public static void CountFunctions ( string text, List<uint> multiLineCommentPositions, List<uint> singleLineCommentPositions, List<uint> stringPositions, MainWindow window ) {
-			int indexfunction = text.IndexOf ( "function" );
+		public static void CountFunctions ( LuaFile file ) {
+			string text = file.content;
 			uint amountfunctions = 0;
+			int indexfunction = text.IndexOf ( "function" );
 			while ( indexfunction != -1 ) {
-				if ( !Comment.IsIndexInComment ( text, indexfunction, multiLineCommentPositions, singleLineCommentPositions ) ) {
-					if ( !LuaString.IsIndexInString ( text, indexfunction, stringPositions ) ) {
+				if ( !file.IsIndexInComment ( indexfunction ) ) {
+					if ( !file.IsIndexInString ( indexfunction ) ) {
 						if ( indexfunction == 0 || Util.CanStayBehind ( text[indexfunction - 1] ) ) {
 							if ( text.Length > indexfunction + "function".Length ) {
 								char nextchar = text[indexfunction + "function".Length];
@@ -50,7 +48,7 @@ namespace MTAResourceStats.funcs {
 				}
 				indexfunction = text.IndexOf ( "function", indexfunction + 1 );
 			}
-			window.AddToData ( Stat.amountGlobalFunctions, amountfunctions );
+			file.window.AddToData ( Stat.amountGlobalFunctions, amountfunctions );
 		}
 		#endregion
 	}

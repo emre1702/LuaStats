@@ -1,112 +1,76 @@
 ﻿using System.Collections.Generic;
+using MTAResourceStats.enums;
+using MTAResourceStats.structclass;
 
 namespace MTAResourceStats.funcs {
 	static class Position {
 
-		#region comment
-		public static void LoadAllCommentStartPositions ( string text, ref List<uint> multiLineCommentPositions, ref List<uint> singleLineCommentPositions ) {
-			int index = text.IndexOf ( "--" );
-			while ( index != -1 ) {
-				if ( text[index + 2] == '[' ) {
-					string commentstr = "[";
-					int addedint = index + 3;
-					while ( text[addedint] == '=' ) {
-						addedint++;
-						commentstr += text[addedint];
-					}
-					if ( text[addedint] == '[' ) {
-						//commentstr += '[';
-						multiLineCommentPositions.Add ( (uint) index );
-						index = text.IndexOf ( "--", index + 4 );
-						continue;
-					}
-				}
-				singleLineCommentPositions.Add ( (uint) index );
-				index = text.IndexOf ( "--", index + 1 );
-			}
-		}
-		#endregion
-
 		#region string & comment
-		public static void LoadAllCommentsAndStrings ( string text, ref List<uint> multiLineCommentPositions, ref List<uint> singleLineCommentPositions, ref List<uint> stringPositions ) {
-			int indexSingleStr = text.IndexOf ( '\'' );
-			int indexMultiStr = text.IndexOf ( '"' );
-			int indexSingleComm = singleLineCommentPositions.Count > 0 ? (int) singleLineCommentPositions[0] : -1;
-			int indexMultiComm = multiLineCommentPositions.Count > 0 ? (int) multiLineCommentPositions[0] : -1;
-			int posSingleComm = 0;
-			int posMultiComm = 0;
+		public static void LoadAllCommentsAndStrings ( LuaFile file ) {
+			string text = file.content;
+			int indexStr = Util.GetMinWithoutNegative ( text.IndexOf ( '\'' ), text.IndexOf ( '"' ) );
+			int indexComm = text.IndexOf ( "--" );
 			int currentpos = 0;
-			char laststrchar = '|';
 
-			while ( currentpos < text.Length && ( indexSingleStr != -1 || indexMultiStr != -1 || indexSingleComm != -1 || indexMultiComm != -1 ) ) {
-				// ' is first //
-				if ( indexSingleStr != -1
-						&& ( laststrchar == '\''
-						|| ( ( indexSingleStr < indexMultiStr || indexMultiStr == -1 )
-						&& ( indexSingleStr < indexSingleComm || indexSingleComm == -1 )
-						&& ( indexSingleStr < indexMultiComm || indexMultiComm == -1 ) ) ) ) {
-					stringPositions.Add ( (uint) indexSingleStr );
-					currentpos = indexSingleStr + 1;
-					laststrchar = laststrchar == '\'' ? '|' : '\'';
-					// " is first //
-				} else if ( indexMultiStr != -1
-						&& ( laststrchar == '"'
-						|| ( ( indexMultiStr < indexSingleStr || indexSingleStr == -1 )
-						&& ( indexMultiStr < indexSingleComm || indexSingleComm == -1 )
-						&& ( indexMultiStr < indexMultiComm || indexMultiComm == -1 ) ) ) ) {
-					stringPositions.Add ( (uint) indexMultiStr );
-					currentpos = indexMultiStr + 1;
-					laststrchar = laststrchar == '"' ? '|' : '"';
-					// -- is first //
-				} else if ( laststrchar == '|'
-						&& indexSingleComm != -1
-						&& ( indexSingleComm < indexSingleStr || indexSingleStr == -1 )
-						&& ( indexSingleComm < indexMultiStr || indexMultiStr == -1 )
-						&& ( indexSingleComm < indexMultiComm || indexMultiComm == -1 ) ) {
-					currentpos = text.IndexOf ( "\n", indexSingleComm );
-					singleLineCommentPositions.Insert ( posSingleComm + 1, (uint) currentpos - 1 );
-					posSingleComm += 2;
-					// --[[=...][ is first //
-				} else if ( laststrchar == '|'
-						&& indexMultiComm != -1
-						&& ( indexMultiComm < indexSingleStr || indexSingleStr == -1 )
-						&& ( indexMultiComm < indexMultiStr || indexMultiStr == -1 )
-						&& ( indexMultiComm < indexSingleComm || indexSingleComm == -1 ) ) {
-					int commStartEndPos = text.IndexOf ( '[', text.IndexOf ( '[', indexMultiComm ) + 1 );
-					string commStart = text.Substring ( indexMultiComm, commStartEndPos - indexMultiComm + 1 );
-					int endindex = text.IndexOf ( commStart.Substring ( 2 ).Replace ( '[', ']' ), indexMultiComm );
-					if ( endindex != -1 ) {
-						currentpos = endindex + ( commStart.Length - 2 );
-						multiLineCommentPositions.Insert ( posMultiComm + 1, (uint) currentpos - 1 );
-					} else {
-						currentpos = text.Length;
-						multiLineCommentPositions.Insert ( posMultiComm + 1, (uint) currentpos - 2 );
+			while ( currentpos < text.Length && ( indexStr != -1 || indexComm != -1 ) ) {
+				bool strbeforecomment = ( indexComm == -1 || indexStr < indexComm && indexStr != -1 );
+				
+				// string came first //
+				if ( strbeforecomment ) {
+					int indexStrEnd = text.IndexOf ( text[indexStr], indexStr + 1 );
+					LuaString str = new LuaString ();
+					str.startindex = indexStr;
+					bool isescaped = ( indexStrEnd > 1 && text[indexStrEnd - 1] == '\\' && text[indexStrEnd - 2] != '\\' );
+					while ( isescaped ) {
+						indexStrEnd = text.IndexOf ( text[indexStr], indexStrEnd + 1 );
+						isescaped = ( indexStrEnd > 1 && text[indexStrEnd - 1] == '\\' && text[indexStrEnd - 2] != '\\' );
 					}
-					posMultiComm += 2;
-				}
-
-				indexSingleStr = text.IndexOf ( '\'', currentpos );
-				indexMultiStr = text.IndexOf ( '"', currentpos );
-				while ( singleLineCommentPositions.Count > posSingleComm && singleLineCommentPositions[posSingleComm] < currentpos ) {
-					singleLineCommentPositions.RemoveAt ( posSingleComm );
-				}
-				indexSingleComm = singleLineCommentPositions.Count > posSingleComm ? (int) singleLineCommentPositions[posSingleComm] : -1;
-				while ( multiLineCommentPositions.Count > posMultiComm && multiLineCommentPositions[posMultiComm] < currentpos ) {
-					multiLineCommentPositions.RemoveAt ( posMultiComm );
-				}
-				indexMultiComm = multiLineCommentPositions.Count > posMultiComm ? (int) multiLineCommentPositions[posMultiComm] : -1;
-
-				if ( laststrchar == '\'' && indexSingleStr == -1 || laststrchar == '"' && indexMultiStr == -1 ) {
-					for ( int i = posSingleComm; i < singleLineCommentPositions.Count; i++ ) {
-						if ( singleLineCommentPositions[i] >= currentpos )
-							singleLineCommentPositions.RemoveRange ( i, singleLineCommentPositions.Count - i );
+					if ( indexStrEnd == -1 )
+						indexStrEnd = text.Length - 1;
+					str.endindex = indexStrEnd;
+					text.Substring ( indexStr, indexStrEnd - indexStr + 1 );
+					file.strings.Add ( str );
+					currentpos = indexStrEnd + 1;
+				// comment came first //
+				} else if ( indexComm != -1 ) {
+					LuaComment comment = new LuaComment ();
+					comment.startindex = (uint) indexComm;
+					// is it a multiple-line comment? //
+					bool addedcomment = false;
+					if ( text[indexComm + 2] == '[' ) {
+						string commentstr = "[";
+						int addedint = indexComm + 3;
+						while ( text[addedint] == '=' ) {
+							commentstr += text[addedint];
+							addedint++;
+						}
+						// yes, it's a multiple-line comment //
+						if ( text[addedint] == '[' ) {
+							commentstr += '[';
+							comment.type = CommentType.multiLine;
+							comment.str = commentstr;
+							string endstr = commentstr.Replace ( '[', ']' );
+							int endcommindex = text.IndexOf ( endstr, addedint + 1 );
+							endcommindex = ( endcommindex == -1 ? text.IndexOf ( '\n', indexComm + 1 ) : ( endcommindex + endstr.Length ) );
+							comment.endindex = (uint) endcommindex;
+							currentpos = endcommindex + 1;
+							file.comments.Add ( comment );
+							addedcomment = true;
+						}
 					}
-					for ( int i = posMultiComm; i < multiLineCommentPositions.Count; i++ ) {
-						if ( multiLineCommentPositions[i] >= currentpos )
-							multiLineCommentPositions.RemoveRange ( i, multiLineCommentPositions.Count - i );
+					if ( !addedcomment ) {
+						// no, it's a single-line comment //
+						comment.type = CommentType.singleLine;
+						comment.str = "--";
+						int endstrindex = text.IndexOf ( '\n', indexComm + 1 );
+						comment.endindex = (uint) endstrindex;
+						file.comments.Add ( comment );
+						currentpos = endstrindex + 1;
 					}
-					return;
 				}
+				// continue //
+				indexStr = Util.GetMinWithoutNegative ( text.IndexOf ( '\'', currentpos ), text.IndexOf ( '"', currentpos ) );
+				indexComm = text.IndexOf ( "--", currentpos );
 			}
 		}
 		#endregion

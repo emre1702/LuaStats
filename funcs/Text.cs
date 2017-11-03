@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using MTAResourceStats.structclass;
 
 namespace MTAResourceStats.funcs {
 	static class Text {
@@ -43,17 +44,12 @@ namespace MTAResourceStats.funcs {
 			return text;
 		}
 
-		public static string GetTextWithoutComment ( string text, List<uint> multiLineCommentPositions, List<uint> singleLineCommentPositions ) {
-			for ( int multiI = multiLineCommentPositions.Count - 1, singleI = singleLineCommentPositions.Count - 1; multiI >= 0 || singleI >= 0; ) {
-				if ( singleI < 0 || multiI >= 0 && multiLineCommentPositions[multiI - 1] > singleLineCommentPositions[singleI - 1] ) {
-					text = text.Remove ( (int) multiLineCommentPositions[multiI - 1], (int) ( multiLineCommentPositions[multiI] - multiLineCommentPositions[multiI - 1] + 1 ) );
-					multiI -= 2;
-				} else {
-					text = text.Remove ( (int) singleLineCommentPositions[singleI - 1], (int) ( singleLineCommentPositions[singleI] - singleLineCommentPositions[singleI - 1] + 1 ) );
-					singleI -= 2;
-				}
+		public static void LoadTextWithoutComment ( LuaFile file ) {
+			string text = file.content;
+			for ( int i = file.comments.Count - 1; i >= 0; i-- ) {
+				text = text.Remove ( (int) file.comments[i].startindex, (int) ( file.comments[i].endindex - file.comments[i].startindex + 1 ) );
 			}
-			return GetTextWithoutUselessLines ( GetTextWithoutUselessSpaces ( text ) );
+			file.contentWithoutComment = GetTextWithoutUselessLines ( GetTextWithoutUselessSpaces ( text ) );
 		}
 	}
 }

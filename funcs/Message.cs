@@ -13,8 +13,12 @@ namespace MTAResourceStats.funcs {
 			MessageBox.Show ( window, message, "Error", MessageBoxButton.OK, MessageBoxImage.Error );
 		}
 
-		public static void SendInfoMessage ( string message, MainWindow window ) {
-			MessageBox.Show ( window, message, "Info", MessageBoxButton.OK, MessageBoxImage.Information );
+		public static void SendInfoMessage ( string message, MainWindow window = null ) {
+			if ( window != null ) {
+				window.Dispatcher.Invoke ( ( ) => MessageBox.Show ( window, message, "Info", MessageBoxButton.OK, MessageBoxImage.Information ) );
+			}  else
+				MessageBox.Show ( message, "Info", MessageBoxButton.OK, MessageBoxImage.Information );
+
 		}
 	}
 }

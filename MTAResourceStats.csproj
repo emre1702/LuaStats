@@ -69,15 +69,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="enums\CommentType.cs" />
+    <Compile Include="MainRunner.cs" />
+    <Compile Include="structclass\interfaceclass\ILoop.cs" />
+    <Compile Include="structclass\LuaComment.cs" />
+    <Compile Include="structclass\LuaFile.cs" />
+    <Compile Include="structclass\ForLoop.cs" />
+    <Compile Include="structclass\Function.cs" />
     <Compile Include="enums\IterateType.cs" />
     <Compile Include="enums\Stat.cs" />
-    <Compile Include="funcs\Comment.cs" />
     <Compile Include="funcs\Counter.cs" />
     <Compile Include="funcs\Iterate.cs" />
     <Compile Include="funcs\Message.cs" />
     <Compile Include="funcs\Position.cs" />
-    <Compile Include="funcs\StatsRetrieve.cs" />
-    <Compile Include="funcs\LuaString.cs" />
     <Compile Include="funcs\Util.cs" />
     <Compile Include="funcs\Variable.cs" />
     <Compile Include="gui\Button.cs" />
@@ -88,6 +92,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gui\ValueChange.cs" />
+    <Compile Include="structclass\IfStatement.cs" />
+    <Compile Include="structclass\LuaString.cs" />
+    <Compile Include="structclass\MTAResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
