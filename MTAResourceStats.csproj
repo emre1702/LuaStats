@@ -70,6 +70,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="enums\CommentType.cs" />
+    <Compile Include="funcs\Diag.cs" />
     <Compile Include="MainRunner.cs" />
     <Compile Include="structclass\interfaceclass\ILoop.cs" />
     <Compile Include="structclass\LuaComment.cs" />
