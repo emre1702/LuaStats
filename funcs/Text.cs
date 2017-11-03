@@ -1,47 +1,32 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Text.RegularExpressions;
 using MTAResourceStats.structclass;
 
 namespace MTAResourceStats.funcs {
 	static class Text {
 
-		public static string GetTextWithoutUselessLines ( string text ) {
-			int firstpos = 0;
-			int secondpos = text.IndexOf ( '\n' );
-			while ( secondpos != -1 ) {
-				if ( firstpos == secondpos ) {
-					text = text.Remove ( firstpos, 1 );
-					secondpos--;
-				} else {
-					string substring = text.Substring ( firstpos, secondpos - firstpos );
-					if ( string.IsNullOrWhiteSpace ( substring ) ) {
-						text = text.Remove ( firstpos, substring.Length );
-						secondpos -= substring.Length;
-					}
+		private static Regex multiSpaceRegex = new Regex ( @"[^\S\r\n]+" );
+
+		public static void GetTextWithoutUselessLines ( ref string[] textlines, ref StringBuilder builder ) {
+			for ( int i = 0; i < textlines.Length; i++ ) {
+				if ( !string.IsNullOrWhiteSpace ( textlines[i] ) ) {
+					builder.Append ( textlines[i].Trim() + "\n" );
 				}
-				firstpos = secondpos + 1;
-				secondpos = text.IndexOf ( '\n', firstpos );
 			}
-			while ( text != "" && text[text.Length - 1] == '\n' )
-				text = text.Remove ( text.Length - 1 );
-
-			return text;
 		}
 
-		public static string GetTextWithoutUselessSpaces ( string text ) {
-			text = Regex.Replace ( text, @"[^\S\r\n]+", " " );
-			int newlineindex = text.IndexOf ( '\n' );
-			text = text.Replace ( " \n ", "\n" ).Replace ( " \n", "\n" ).Replace ( "\n ", "\n" );
-			return text;
+		public static void GetTextWithoutUselessSpaces ( ref StringBuilder builder ) {
+			string newstr = ( multiSpaceRegex.Replace ( builder.ToString(), " " ) );
+			builder.Clear().Append ( newstr ).Replace ( " \n ", "\n" ).Replace ( " \n", "\n" ).Replace ( "\n ", "\n" ).Append ( "\n" );
 		}
 
-		public static void LoadTextWithoutComment ( LuaFile file ) {
-			string text = file.content;
+		public static void LoadTextWithoutComment ( LuaFile file, ref StringBuilder builder ) {
 			for ( int i = file.comments.Count - 1; i >= 0; i-- ) {
-				text = text.Remove ( (int) file.comments[i].startindex, (int) ( file.comments[i].endindex - file.comments[i].startindex + 1 ) );
+				builder.Remove ( (int) file.comments[i].startindex, (int) ( file.comments[i].endindex - file.comments[i].startindex + 1 ) );
 			}
-			file.contentWithoutComment = GetTextWithoutUselessLines ( GetTextWithoutUselessSpaces ( text ) );
+			file.contentWithoutComment = builder.ToString ();
 		}
 	}
 }
