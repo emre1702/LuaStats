@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 using MTAResourceStats.structclass;
 
@@ -31,16 +32,7 @@ namespace MTAResourceStats.funcs {
 		public static string GetTextWithoutUselessSpaces ( string text ) {
 			text = Regex.Replace ( text, @"[^\S\r\n]+", " " );
 			int newlineindex = text.IndexOf ( '\n' );
-			while ( newlineindex >= 0 ) {
-				if ( newlineindex < text.Length - 1 && text[newlineindex + 1] == ' ' ) {
-					text = text.Remove ( newlineindex + 1, 1 );
-				}
-				if ( newlineindex > 0 && text[newlineindex - 1] == ' ' ) {
-					text = text.Remove ( newlineindex - 1, 1 );
-					newlineindex--;
-				}
-				newlineindex = text.IndexOf ( '\n', newlineindex + 1 );
-			}
+			text = text.Replace ( " \n ", "\n" ).Replace ( " \n", "\n" ).Replace ( "\n ", "\n" );
 			return text;
 		}
 
