@@ -1,7 +1,6 @@
-﻿
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using MTAResourceStats.enums;
 using MTAResourceStats.funcs;
 using MTAResourceStats.gui;
@@ -22,27 +21,40 @@ namespace MTAResourceStats {
 			if ( !Path.HasExtension ( filepath ) || Path.GetExtension ( filepath ).ToLower () != ".lua" )
 				resource.AddOtherFile ( filepath );
 			else {
+				Diag diag = new Diag ( false );
 				LuaFile file = new LuaFile ();
 				resource.AddLuaFile ( file );
 				file.window = window;
 				file.filepath = filepath;
+				diag.SaveTick ( filepath+" :" );
 				file.comments = new List<LuaComment> ();
 				file.functions = new List<Function> ();
 				file.strings = new List<LuaString> ();
-
+				diag.SaveTick ( "1: " );
 				string[] textlines = File.ReadAllLines ( filepath );
-				string text = string.Join ( "\n", textlines );
-				text = Text.GetTextWithoutUselessLines ( text );
-				text = Text.GetTextWithoutUselessSpaces ( text ) + "\n";
-				file.content = text;
-	
+				diag.SaveTick ( "2: " );
+				StringBuilder builder = new StringBuilder ();
+				Text.GetTextWithoutUselessLines ( ref textlines, ref builder );
+
+				diag.SaveTick ( "3: " );
+				Text.GetTextWithoutUselessSpaces ( ref builder );
+				file.content = builder.ToString();
+
+				diag.SaveTick ( "4: " );
 				Position.LoadAllCommentsAndStrings ( file );
-				Text.LoadTextWithoutComment ( file );
+				diag.SaveTick ( "5: " );
+				Text.LoadTextWithoutComment ( file, ref builder );
+				diag.SaveTick ( "6: " );
 
 				Counter.CountFunctions ( file );
+				diag.SaveTick ( "7: " );
 				Counter.CountData ( file );
+				diag.SaveTick ( "8: " );
 				Counter.CountCommentData ( file );
-				Counter.CountFunctions ( file ); 
+				diag.SaveTick ( "9: " );
+				Counter.CountFunctions ( file );
+				diag.SaveTick ( "10: " );
+				diag.End ( );
 
 				//Variable.LoadLocalVariables ( text, textwithoutcomment, ref localvariables, multiLineCommentPositions, singleLineCommentPositions, stringPositions );
 			}
