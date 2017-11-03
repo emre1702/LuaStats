@@ -23,6 +23,7 @@ namespace MTAResourceStats.gui {
 
 
 		private async void OnStartButtonClick ( object sender, RoutedEventArgs e ) {
+			Diag diag = new Diag ( false );
 			string path = this.folderTextBox.Text;
 			if ( Directory.Exists ( path ) ) {
 				this.SetDefaultValues ();
@@ -36,6 +37,8 @@ namespace MTAResourceStats.gui {
 			} else {
 				Message.SendErrorMessage ( "Folder doesn't exist!", this );
 			}
+			diag.SaveSeconds ( "end: " );
+			diag.End ( );
 		}
 	}
 }
