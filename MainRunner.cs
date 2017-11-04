@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using MTAResourceStats.enums;
@@ -55,6 +56,10 @@ namespace MTAResourceStats {
 				Counter.CountCommentData ( file, ref textwithoutcomment );
 				diag.SaveTick ( "9: " );
 				diag.End ( );
+
+				window.amountfilealreadydone++;
+				if ( window.amountfilealreadydone % 500 == 0 )
+					GC.Collect ();
 
 				//Variable.LoadLocalVariables ( text, textwithoutcomment, ref localvariables, multiLineCommentPositions, singleLineCommentPositions, stringPositions );
 			}
