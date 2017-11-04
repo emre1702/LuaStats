@@ -6,7 +6,7 @@ namespace MTAResourceStats.gui {
 	partial class MainWindow : Window {
 
 		private void SetDefaultValues ( ) {
-			this.Dispatcher.Invoke ( ( ) => {
+			this.Dispatcher.InvokeAsync ( ( ) => {
 				this.amountFiles.Content = "0";
 				this.amountLuaFilesLabel.Content = "0";
 				this.amountOtherFilesLabel.Content = "0";
@@ -21,7 +21,7 @@ namespace MTAResourceStats.gui {
 		}
 
 		public void AddToData ( Stat stat, uint valuetoadd ) {
-			this.Dispatcher.Invoke ( ( ) => {
+			this.Dispatcher.InvokeAsync ( ( ) => {
 				switch ( stat ) {
 					case Stat.amountLuaFiles:
 						this.amountFiles.Content = Convert.ToUInt32 ( this.amountFiles.Content ) + valuetoadd;
