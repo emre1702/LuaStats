@@ -29,9 +29,11 @@ namespace MTAResourceStats.gui {
 				this.SetDefaultValues ();
 				IterateType iteratetype = (ListBoxItem) ( this.iterateChoice.SelectedItem ) == fastIterateChoice ? IterateType.fastBlocking : IterateType.slowNotBlocking;
 				this.Cursor = Cursors.Wait;
+				Diag indexdiag = new Diag ( true, DiagOption.indexValue );
 				await Task.Run ( ( ) => {
-					MainRunner.Start ( path, iteratetype, this );
+					MainRunner.Start ( path, iteratetype, this, indexdiag );
 				} );
+				indexdiag.End ();
 				this.Cursor = Cursors.Arrow;
 				MessageBox.Show ( this, "finished", "Success", MessageBoxButton.OK, MessageBoxImage.Information );
 			} else {
