@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MTAResourceStats.funcs {
@@ -31,7 +32,7 @@ namespace MTAResourceStats.funcs {
 		public static int GetNextIndexOfSeperator ( string text, int startindex, List<char> seperator ) {
 			int[] indexlist = new int[seperator.Count];
 			for ( int i = 0; i < seperator.Count; i++ ) {
-				indexlist[i] = text.IndexOf ( seperator[i], startindex );
+				indexlist[i] = text.IndexOf ( seperator[i]+"", startindex, StringComparison.Ordinal );
 			}
 			IEnumerable<int> indexlistwithoutnegatives = indexlist.Where ( i => i >= 0 );
 			return indexlistwithoutnegatives.Count () == 0 ? -1 : indexlistwithoutnegatives.Min ();
