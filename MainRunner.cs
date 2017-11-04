@@ -9,15 +9,15 @@ using MTAResourceStats.structclass;
 namespace MTAResourceStats {
 	class MainRunner {
 
-		public static void Start ( string path, IterateType iteratetype, MainWindow window ) {
+		public static void Start ( string path, IterateType iteratetype, MainWindow window, Diag indexdiag ) {
 			MTAResource resource = new MTAResource ( window );
 
 			IEnumerable<string> files = Directory.EnumerateFiles ( path, "*", SearchOption.AllDirectories );
 			// iterate files //
-			Iterate.MainIterate ( iteratetype, files, ( filepath ) => StatsRetrieve ( filepath, window, resource ) );
+			Iterate.MainIterate ( iteratetype, files, ( filepath ) => StatsRetrieve ( filepath, window, resource, indexdiag ) );
 		}
 
-		private static void StatsRetrieve ( string filepath, MainWindow window, MTAResource resource ) {
+		private static void StatsRetrieve ( string filepath, MainWindow window, MTAResource resource, Diag indexdiag ) {
 			if ( !Path.HasExtension ( filepath ) || Path.GetExtension ( filepath ).ToLower () != ".lua" )
 				resource.AddOtherFile ( filepath );
 			else {
@@ -44,14 +44,15 @@ namespace MTAResourceStats {
 				Position.LoadAllCommentsAndStrings ( file );
 				diag.SaveTick ( "5: " );
 				Text.LoadTextWithoutCommentIntoBuilder ( file, ref builder );
+				string textwithoutcomment = builder.ToString ();
 				diag.SaveTick ( "6: " );
 
-				// builder contains text without comments now //
-				Counter.CountFunctions ( file, ref builder );
+				
+				Counter.CountFunctions ( file, ref textwithoutcomment );
 				diag.SaveTick ( "7: " );
-				Counter.CountData ( file );
+				Counter.CountData ( file, ref textwithoutcomment );
 				diag.SaveTick ( "8: " );
-				Counter.CountCommentData ( file );
+				Counter.CountCommentData ( file, ref textwithoutcomment );
 				diag.SaveTick ( "9: " );
 				diag.End ( );
 
