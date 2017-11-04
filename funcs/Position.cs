@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MTAResourceStats.enums;
 using MTAResourceStats.structclass;
 
@@ -8,8 +9,12 @@ namespace MTAResourceStats.funcs {
 		#region string & comment
 		public static void LoadAllCommentsAndStrings ( LuaFile file ) {
 			string text = file.content;
-			int indexStr = Util.GetMinWithoutNegative ( text.IndexOf ( '\'' ), text.IndexOf ( '"' ) );
-			int indexComm = text.IndexOf ( "--" );
+			string singlequote = "'";
+			string doublequote = "\"";
+			string doubleminus = "--";
+			string nextline = "\n";
+			int indexStr = Util.GetMinWithoutNegative ( text.IndexOf ( singlequote, StringComparison.Ordinal ), text.IndexOf ( doublequote, StringComparison.Ordinal ) );
+			int indexComm = text.IndexOf ( doubleminus, StringComparison.Ordinal );
 			int currentpos = 0;
 
 			while ( currentpos < text.Length && ( indexStr != -1 || indexComm != -1 ) ) {
@@ -17,12 +22,12 @@ namespace MTAResourceStats.funcs {
 				
 				// string came first //
 				if ( strbeforecomment ) {
-					int indexStrEnd = text.IndexOf ( text[indexStr], indexStr + 1 );
+					int indexStrEnd = text.IndexOf ( text[indexStr]+"", indexStr + 1, StringComparison.Ordinal );
 					LuaString str = new LuaString ();
 					str.startindex = indexStr;
 					bool isescaped = ( indexStrEnd > 1 && text[indexStrEnd - 1] == '\\' && text[indexStrEnd - 2] != '\\' );
 					while ( isescaped ) {
-						indexStrEnd = text.IndexOf ( text[indexStr], indexStrEnd + 1 );
+						indexStrEnd = text.IndexOf ( text[indexStr]+"", indexStrEnd + 1, StringComparison.Ordinal );
 						isescaped = ( indexStrEnd > 1 && text[indexStrEnd - 1] == '\\' && text[indexStrEnd - 2] != '\\' );
 					}
 					if ( indexStrEnd == -1 )
@@ -50,8 +55,8 @@ namespace MTAResourceStats.funcs {
 							comment.type = CommentType.multiLine;
 							comment.str = commentstr;
 							string endstr = commentstr.Replace ( '[', ']' );
-							int endcommindex = text.IndexOf ( endstr, addedint + 1 );
-							endcommindex = ( endcommindex == -1 ? text.IndexOf ( '\n', indexComm + 1 ) : ( endcommindex + endstr.Length ) );
+							int endcommindex = text.IndexOf ( endstr, addedint + 1, StringComparison.Ordinal );
+							endcommindex = ( endcommindex == -1 ? text.IndexOf ( nextline, indexComm + 1, StringComparison.Ordinal ) : ( endcommindex + endstr.Length ) );
 							comment.endindex = (uint) endcommindex;
 							currentpos = endcommindex + 1;
 							file.comments.Add ( comment );
@@ -61,16 +66,16 @@ namespace MTAResourceStats.funcs {
 					if ( !addedcomment ) {
 						// no, it's a single-line comment //
 						comment.type = CommentType.singleLine;
-						comment.str = "--";
-						int endstrindex = text.IndexOf ( '\n', indexComm + 1 );
+						comment.str = doubleminus;
+						int endstrindex = text.IndexOf ( nextline, indexComm + 1, StringComparison.Ordinal );
 						comment.endindex = (uint) endstrindex;
 						file.comments.Add ( comment );
 						currentpos = endstrindex + 1;
 					}
 				}
 				// continue //
-				indexStr = Util.GetMinWithoutNegative ( text.IndexOf ( '\'', currentpos ), text.IndexOf ( '"', currentpos ) );
-				indexComm = text.IndexOf ( "--", currentpos );
+				indexStr = Util.GetMinWithoutNegative ( text.IndexOf ( singlequote, currentpos, StringComparison.Ordinal ), text.IndexOf ( doublequote, currentpos, StringComparison.Ordinal ) );
+				indexComm = text.IndexOf ( doubleminus, currentpos, StringComparison.Ordinal );
 			}
 		}
 		#endregion
