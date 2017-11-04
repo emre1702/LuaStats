@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using MTAResourceStats.enums;
 using MTAResourceStats.gui;
 using MTAResourceStats.structclass;
@@ -17,31 +18,30 @@ namespace MTAResourceStats.funcs {
 		#region comment
 		public static void CountCommentData ( LuaFile file ) {
 			uint amountchars = 0;
+			uint amountnewlines = 0;
 			for ( int i = 0; i < file.comments.Count; i++ ) {
 				string substr = file.content.Substring ( (int) file.comments[i].startindex, (int) ( file.comments[i].endindex - file.comments[i].startindex + 1 ) );
-				uint amountnewlines = (uint) ( substr.Count ( c => c == '\n' ) );
+				amountnewlines += (uint) ( substr.Count ( c => c == '\n' ) ) + 1;
 				amountchars += (uint) substr.Length - amountnewlines;
-				file.window.AddToData ( Stat.amountCommentLines, 1 + amountnewlines );
 			}
 			file.window.AddToData ( Stat.amountCommentCharacters, amountchars );
+			file.window.AddToData ( Stat.amountCommentLines, amountnewlines );
 			file.amountCommentChars = amountchars;
 		}
 		#endregion
 
 		#region function
-		public static void CountFunctions ( LuaFile file ) {
-			string text = file.content;
+		public static void CountFunctions ( LuaFile file, ref StringBuilder builder ) {
+			string text = builder.ToString ();
 			uint amountfunctions = 0;
 			int indexfunction = text.IndexOf ( "function" );
 			while ( indexfunction != -1 ) {
-				if ( !file.IsIndexInComment ( indexfunction ) ) {
-					if ( !file.IsIndexInString ( indexfunction ) ) {
-						if ( indexfunction == 0 || Util.CanStayBehind ( text[indexfunction - 1] ) ) {
-							if ( text.Length > indexfunction + "function".Length ) {
-								char nextchar = text[indexfunction + "function".Length];
-								if ( Util.CanStayInFrontOfFunction ( nextchar ) ) {
-									amountfunctions++;
-								}
+				if ( !file.IsIndexInString ( indexfunction ) ) {
+					if ( indexfunction == 0 || Util.CanStayBehind ( text[indexfunction - 1] ) ) {
+						if ( text.Length > indexfunction + "function".Length ) {
+							char nextchar = text[indexfunction + "function".Length];
+							if ( Util.CanStayInFrontOfFunction ( nextchar ) ) {
+								amountfunctions++;
 							}
 						}
 					}
