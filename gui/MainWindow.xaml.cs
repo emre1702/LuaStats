@@ -13,9 +13,12 @@ using MTAResourceStats.enums;
 namespace MTAResourceStats.gui {
 
 	partial class MainWindow : Window {
+		public int amountfilealreadydone = 0;
+		private string version = "v1.1.6";
 
 		public MainWindow ( ) {
 			InitializeComponent ();
+			this.Title += " " + version;
 		}
 	}
 }
