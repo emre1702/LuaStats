@@ -24,7 +24,7 @@ namespace MTAResourceStats.gui {
 
 
 		private async void OnStartButtonClick ( object sender, RoutedEventArgs e ) {
-			Diag diag = new Diag ( true );
+			Diag diag = new Diag ( false );
 			string path = this.folderTextBox.Text;
 			if ( Directory.Exists ( path ) ) {
 				this.SetDefaultValues ();
