@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -26,6 +27,19 @@ namespace MTAResourceStats.funcs {
 			for ( int i = file.comments.Count - 1; i >= 0; i-- ) {
 				builder.Remove ( (int) file.comments[i].startindex, (int) ( file.comments[i].endindex - file.comments[i].startindex + 1 ) );
 			}
+		}
+
+		public static int GetCountOfStringInText ( ref string text, string searchfor ) {
+			int count = -1;
+			int index = -1;
+
+			do {
+				count++;
+				index = text.IndexOf ( searchfor, index + 1, StringComparison.Ordinal );
+			}
+			while ( index != -1 );
+
+			return count + 1;
 		}
 	}
 }
