@@ -22,11 +22,10 @@ namespace MTAResourceStats.funcs {
 			builder.Clear().Append ( newstr ).Replace ( " \n ", "\n" ).Replace ( " \n", "\n" ).Replace ( "\n ", "\n" ).Append ( "\n" );
 		}
 
-		public static void LoadTextWithoutComment ( LuaFile file, ref StringBuilder builder ) {
+		public static void LoadTextWithoutCommentIntoBuilder ( LuaFile file, ref StringBuilder builder ) {
 			for ( int i = file.comments.Count - 1; i >= 0; i-- ) {
 				builder.Remove ( (int) file.comments[i].startindex, (int) ( file.comments[i].endindex - file.comments[i].startindex + 1 ) );
 			}
-			file.contentWithoutComment = builder.ToString ();
 		}
 	}
 }
