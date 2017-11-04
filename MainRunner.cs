@@ -43,17 +43,16 @@ namespace MTAResourceStats {
 				diag.SaveTick ( "4: " );
 				Position.LoadAllCommentsAndStrings ( file );
 				diag.SaveTick ( "5: " );
-				Text.LoadTextWithoutComment ( file, ref builder );
+				Text.LoadTextWithoutCommentIntoBuilder ( file, ref builder );
 				diag.SaveTick ( "6: " );
 
-				Counter.CountFunctions ( file );
+				// builder contains text without comments now //
+				Counter.CountFunctions ( file, ref builder );
 				diag.SaveTick ( "7: " );
 				Counter.CountData ( file );
 				diag.SaveTick ( "8: " );
 				Counter.CountCommentData ( file );
 				diag.SaveTick ( "9: " );
-				Counter.CountFunctions ( file );
-				diag.SaveTick ( "10: " );
 				diag.End ( );
 
 				//Variable.LoadLocalVariables ( text, textwithoutcomment, ref localvariables, multiLineCommentPositions, singleLineCommentPositions, stringPositions );
