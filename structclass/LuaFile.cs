@@ -9,7 +9,6 @@ namespace MTAResourceStats.structclass {
 		public MainWindow window;
 		public string filepath;
 		public string content;
-		public string contentWithoutComment;
 		public List<Function> functions;
 		public List<LuaString> strings;
 		public List<LuaComment> comments;
