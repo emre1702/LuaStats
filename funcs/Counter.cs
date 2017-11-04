@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MTAResourceStats.enums;
@@ -9,32 +10,27 @@ namespace MTAResourceStats.funcs {
 	static class Counter {
 
 		#region text
-		public static void CountData ( LuaFile file ) {
+		public static void CountData ( LuaFile file, ref string textwithoutcomment ) {
 			file.window.AddToData ( Stat.amountCharacters, (uint) ( file.content.Replace ( "\n", "" ).Length - file.amountCommentChars ) );
-			file.window.AddToData ( Stat.amountLines, ( (uint) ( file.contentWithoutComment != "" ? 1 : 0 ) + (uint) file.contentWithoutComment.Count ( c => c == '\n' ) ) );
+			file.window.AddToData ( Stat.amountLines, ( (uint) ( textwithoutcomment != "" ? 1 : 0 ) + (uint) textwithoutcomment.Count ( c => c == '\n' ) ) );
 		}
 		#endregion
 
 		#region comment
-		public static void CountCommentData ( LuaFile file ) {
-			uint amountchars = 0;
-			uint amountnewlines = 0;
-			for ( int i = 0; i < file.comments.Count; i++ ) {
-				string substr = file.content.Substring ( (int) file.comments[i].startindex, (int) ( file.comments[i].endindex - file.comments[i].startindex + 1 ) );
-				amountnewlines += (uint) ( substr.Count ( c => c == '\n' ) ) + 1;
-				amountchars += (uint) substr.Length - amountnewlines;
-			}
-			file.window.AddToData ( Stat.amountCommentCharacters, amountchars );
-			file.window.AddToData ( Stat.amountCommentLines, amountnewlines );
+		public static void CountCommentData ( LuaFile file, ref string textwithoutcomment ) {
+			uint amountchars = (uint) textwithoutcomment.Length;
+
+			file.window.AddToData ( Stat.amountCommentCharacters, (uint) textwithoutcomment.Length );
+			file.window.AddToData ( Stat.amountCommentLines, (uint) ( Text.GetCountOfStringInText ( ref textwithoutcomment, "\n" ) ) );
+
 			file.amountCommentChars = amountchars;
 		}
 		#endregion
 
 		#region function
-		public static void CountFunctions ( LuaFile file, ref StringBuilder builder ) {
-			string text = builder.ToString ();
+		public static void CountFunctions ( LuaFile file, ref string text ) {
 			uint amountfunctions = 0;
-			int indexfunction = text.IndexOf ( "function" );
+			int indexfunction = text.IndexOf ( "function", StringComparison.Ordinal );
 			while ( indexfunction != -1 ) {
 				if ( !file.IsIndexInString ( indexfunction ) ) {
 					if ( indexfunction == 0 || Util.CanStayBehind ( text[indexfunction - 1] ) ) {
@@ -46,7 +42,7 @@ namespace MTAResourceStats.funcs {
 						}
 					}
 				}
-				indexfunction = text.IndexOf ( "function", indexfunction + 1 );
+				indexfunction = text.IndexOf ( "function", indexfunction + 1, StringComparison.Ordinal );
 			}
 			file.window.AddToData ( Stat.amountGlobalFunctions, amountfunctions );
 		}
