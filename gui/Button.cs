@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,13 +24,13 @@ namespace MTAResourceStats.gui {
 
 
 		private async void OnStartButtonClick ( object sender, RoutedEventArgs e ) {
-			Diag diag = new Diag ( false );
+			Diag diag = new Diag ( true );
 			string path = this.folderTextBox.Text;
 			if ( Directory.Exists ( path ) ) {
 				this.SetDefaultValues ();
 				IterateType iteratetype = (ListBoxItem) ( this.iterateChoice.SelectedItem ) == fastIterateChoice ? IterateType.fastBlocking : IterateType.slowNotBlocking;
 				this.Cursor = Cursors.Wait;
-				Diag indexdiag = new Diag ( true, DiagOption.indexValue );
+				Diag indexdiag = new Diag ( false, DiagOption.indexValue );
 				await Task.Run ( ( ) => {
 					MainRunner.Start ( path, iteratetype, this, indexdiag );
 				} );
@@ -41,6 +42,7 @@ namespace MTAResourceStats.gui {
 			}
 			diag.SaveSeconds ( "end: " );
 			diag.End ( );
+			GC.Collect ();
 		}
 	}
 }
