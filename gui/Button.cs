@@ -36,13 +36,13 @@ namespace MTAResourceStats.gui {
 				} );
 				indexdiag.End ();
 				this.Cursor = Cursors.Arrow;
+				GC.Collect ();
 				MessageBox.Show ( this, "finished", "Success", MessageBoxButton.OK, MessageBoxImage.Information );
 			} else {
 				Message.SendErrorMessage ( "Folder doesn't exist!", this );
 			}
 			diag.SaveSeconds ( "end: " );
 			diag.End ( );
-			GC.Collect ();
 		}
 	}
 }
